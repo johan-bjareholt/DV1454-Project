@@ -1,0 +1,51 @@
+Lodge
+- (PK) number
+- adress
+- bedcount
+- roomcount
+- kitchenclass
+- misc equipment
+- price highseason
+- price lowseasong
+
+
+
+Order
+- (PK) Ordernr
+- Lodge
+- Price
+- startdate
+- enddate
+
+
+Customer
+- (PK) nr
+- (FK) Ordernr
+- Name
+- Birthdate
+- (FK) Winterrental
+- (FK) Summerrental
+
+
+Winter:
+- (PK) WRentalNr
+- (FK) CustomerNr
+- startdate
+- enddate
+- Skis
+	- type: downhill, cross-country
+	- length
+- Ski poles
+	- length
+- Skihelmet
+	- size
+
+Summer:
+- (PK) SRentalNr
+- (FK) CustomerNr
+- startdate
+- enddate
+- Bicycle
+	- Type: roadbike, downhill bike, mountain bike
+	- Brand
+	- Modelname
