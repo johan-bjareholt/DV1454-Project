@@ -1,5 +1,5 @@
 # DV1454-Project
-Simple Node Express webpage with a SQL database
+Simple webpage with a NodeJS Express backend, AngularJS frontent and with a SQL database
 
 ## Installation
 
