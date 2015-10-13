@@ -1,0 +1,18 @@
+<p>
+    Here are all the lodges<br>
+    Boop boop <br>
+    <div ng-repeat="lodge in lodges">
+        <br>
+        <table>
+            <tr>
+                <td>{{lodge.lodgenr}} - {{lodge.name}}</td>
+            </tr>
+            <tr>
+                <td>{{lodge.description}}</td>
+            </tr>
+            <tr>
+                <td><button ng-if="user">Rent</button></td>
+            </tr>
+        </table>
+    </div>
+</p>

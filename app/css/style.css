@@ -24,7 +24,7 @@ h1 {
 
 header {
     left: 0;
-    right: 0;
+    top: 0;
     padding: 0.5em;
     padding-left: 2em;
     padding-right: 2em;
@@ -41,6 +41,10 @@ header {
 .content {
     padding: 2em;
     padding-top: 5em;
+}
+
+.headeritem {
+    display: inline;
 }
 
 /*

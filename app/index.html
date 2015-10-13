@@ -4,18 +4,32 @@
     <meta charset="UTF-8">
     <title>DBProjectSite</title>
     <base href="/">
+    <link rel="stylesheet" href="/css/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-cookies.js"></script>
     <script src="/js/angular.js"></script>
-    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/auth.js"></script>
+    <script src="/js/controllers.js"></script>
 </head>
 
 <body ng-controller="MainCtrl">
 
-<header>
-    <h1>Test Heading</h1>
+<header ng-controller="HeaderCtrl">
+    <h1 class="headeritem"><a href="/">Lodge Renting</a></h1>
+    <a class="headeritem" href="/lodges/">Lodges</a>
+    <span style="float:right; padding-right: 3em;">
+        <div ng-if="user">
+            You are logged in as: {{ user.firstname }}
+            <button class="headeritem" ng-click="logout()">Logout</button>
+        </div>
+        <div ng-if="!user">
+            <a class="headeritem" href="/login/">Login</a>
+            <a class="headeritem" href="/register/">Register</a>
+        </div>
+    </span>
 </header>
 
 <div ng-view class="content"></div>

@@ -1,6 +1,7 @@
 module.exports = {
     connect: connect,
-    disconnect: disconnect
+    disconnect: disconnect,
+    query: query,
 };
 
 mysql = require('mysql');
@@ -27,9 +28,30 @@ function disconnect(){
     connection.end();
 }
 
-function query(){
-    connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-        if (err) throw err;
-        console.log('The solution is: ', rows[0].solution);
+function query(q, callback){
+    connection.query(q, function(err, rows, fields){
+        if (err){
+            console.error(err);
+            callback(false);
+        }
+        else {
+            var result;
+            if (rows.length == 0)
+                result = "";
+            else if (rows.length == 1)
+                result = rows[0];
+            else if (rows.length > 1) {
+                var pk = fields[0].name
+                result = {};
+                for (row in rows){
+                    result[rows[row][pk]] = rows[row];
+                }
+            }
+            else {
+                result = null;
+            }
+            callback(true, result);
+            console.log(result);
+        }
     });
 }
