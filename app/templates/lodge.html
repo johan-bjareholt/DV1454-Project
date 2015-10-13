@@ -1,0 +1,32 @@
+<p>A lodge</p>
+<table>
+    <tr>
+        <td>{{lodge.lodgenr}} - {{lodge.name}}</td>
+    </tr>
+    <tr>
+        <td>{{lodge.description}}</td>
+    </tr>
+    <tr><td>{{lodge.pricehigh}} sek/day</td></tr>
+</table>
+
+<form ng-if="user" name="form" ng-submit="vm.login()" role="form">
+    <table>
+        <tr class="form-group" ng-class="{ 'has-error': form.week.$dirty && form.week.$error.required }">
+            <td><label for="week">Week</label></td>
+            <td><input type="text" name="week" id="week" class="form-control" ng-model="vm.week" required /></td>
+            <td><span ng-show="form.week.$dirty && form.week.$error.required" class="help-block">Week is required</span></td>
+        </tr>
+        <tr class="form-group" ng-class="{ 'has-error': form.week.$dirty && form.week.$error.required }">
+            <td><label for="week">Week Count</label></td>
+            <td><input type="text" name="week" id="week" class="form-control" ng-model="vm.week" required /></td>
+            <td><span ng-show="form.week.$dirty && form.week.$error.required" class="help-block">Week count is required</span></td>
+        </tr>
+        <div class="form-actions">
+            <td>
+                <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Rent</button>
+                <img ng-if="vm.dataLoading"
+                    src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </td>
+        </div>
+    </table>
+</form>

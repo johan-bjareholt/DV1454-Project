@@ -11,7 +11,9 @@
                 <td>{{lodge.description}}</td>
             </tr>
             <tr>
-                <td><button ng-if="user">Rent</button></td>
+                <td>
+                    <button ng-if="user" ng-click="gotoLodge(lodge.lodgenr)">Rent</button>
+                </td>
             </tr>
         </table>
     </div>

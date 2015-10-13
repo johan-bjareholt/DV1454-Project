@@ -6,6 +6,11 @@ app.config(function($routeProvider, $locationProvider) {
         controller: "HomeCtrl",
         controllerAs: 'vm'
     });
+    $routeProvider.when("/lodges/:lodgenr", {
+        templateUrl: "templates/lodge.html",
+        controller: "LodgeCtrl",
+        controllerAs: 'vm'
+    });
     $routeProvider.when("/lodges/", {
         templateUrl: "templates/lodges.html",
         controller: "LodgeListCtrl",

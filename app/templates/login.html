@@ -3,7 +3,7 @@
     <div ng-show="vm.error" class="alert alert-danger">{{error}}</div>
     <form name="form" ng-submit="vm.login()" role="form">
         <table>
-            <tr class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+            <tr class="form-group" ng-class="{ 'has-error': form.email.$dirty && form.email.$error.required }">
                 <td><label for="email">Email</label></td>
                 <td><input type="text" name="email" id="email" class="form-control" ng-model="vm.email" required /></td>
                 <td><span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">Email is required</span></td>

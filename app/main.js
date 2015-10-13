@@ -22,15 +22,28 @@ app.use('/templates', express.static('templates'));
 /*
     Setup API
 */
-// Get lodges
+// Get lodge
+app.get('/api/lodges/:lodgenr', function (req, res) {
+    var lodgenr = req.params.lodgenr;
+    var data;
+    db.query("SELECT * FROM Lodges WHERE lodgenr="+lodgenr,
+        function(success, result){
+            if (success){
+                data = result;
+            }
+            res.end(JSON.stringify(data));
+    });
+})
+
+// Get all lodges
 app.get('/api/lodges/', function (req, res) {
-    //var data = {"lodge1": {"nr": 1, "bedc": 2}};
     var data;
     db.query("SELECT * FROM Lodges",
         function(success, result){
             if (success){
                 data = result;
             }
+            console.log(data);
             res.end(JSON.stringify(data));
     });
 })

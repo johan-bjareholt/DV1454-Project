@@ -16,12 +16,23 @@ app.controller("HomeCtrl", function($scope, $resource, $routeParams) {
 
 });
 
-app.controller("LodgeListCtrl", function($scope, $resource, $routeParams) {
+app.controller("LodgeCtrl", function($scope, $resource, $routeParams){
+    var Lodge = $resource("/api/lodges/"+$routeParams.lodgenr);
+    Lodge.get("", function(lodge){
+        console.log(lodge);
+        $scope.lodge = lodge;
+    })
+});
+
+app.controller("LodgeListCtrl", function($scope, $resource, $routeParams, $location) {
     var Lodges = $resource("/api/lodges");
     Lodges.get("", function(lodges){
         console.log(lodges);
         $scope.lodges = lodges;
     });
+    $scope.gotoLodge = function(lodgenr) {
+        $location.url('/lodges/'+lodgenr);
+    };
 });
 
 app.controller("LoginController", function($location, AuthenticationService){
