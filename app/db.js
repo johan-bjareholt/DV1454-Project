@@ -50,8 +50,8 @@ function query(q, callback){
             else {
                 result = null;
             }
+            //console.log(result);
             callback(true, result);
-            console.log(result);
         }
     });
 }

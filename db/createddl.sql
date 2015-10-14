@@ -22,20 +22,21 @@ CREATE TABLE IF NOT EXISTS Lodges (
     description VARCHAR(255) NOT NULL
 );
 
---DROP TABLE IF EXISTS Orders;
+-- DROP TABLE IF EXISTS Orders;
 
 CREATE TABLE IF NOT EXISTS Orders (
-    ordernr INT NOT NULL PRIMARY KEY,
+    ordernr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    accountnr VARCHAR(40) NOT NULL,
     lodgenr INT NOT NULL,
     price FLOAT NOT NULL,
-    startdate DATE NOT NULL,
-    enddate DATE NOT NULL
+    startweek INT NOT NULL,
+    endweek INT NOT NULL
 );
 
 --DROP TABLE IF EXISTS Customer;
 
 CREATE TABLE IF NOT EXISTS Customer (
-    customernr INT NOT NULL PRIMARY KEY,
+    customernr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     birthdate DATE NOT NULL
 );
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS Customer (
 --DROP TABLE IF EXISTS WinterRentals;
 
 CREATE TABLE IF NOT EXISTS WinterRentals (
-    wrentalnr INT NOT NULL PRIMARY KEY,
+    wrentalnr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     ordernr INT NOT NULL,
     customernr INT NOT NULL,
 
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS WinterRentals (
 --DROP TABLE IF EXISTS SummerRentals;
 
 CREATE TABLE IF NOT EXISTS SummerRentals (
-    srentalnr INT NOT NULL PRIMARY KEY,
+    srentalnr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     customernr INT NOT NULL,
     rentalstart DATE NOT NULL,
     rentalend DATE NOT NULL,

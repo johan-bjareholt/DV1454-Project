@@ -54,7 +54,7 @@ app.get('/api/users/', function (req, res) {
 })
 app.get('/api/users/:email', function(req, res) {
     var email = req.params.email;
-    var q = 'SELECT email, firstName, lastName FROM Accounts WHERE email="'+email+'"';
+    var q = 'SELECT nr, email, firstName, lastName FROM Accounts WHERE email="'+email+'"';
     db.query(q, function(result, message){
         console.log(message)
         res.end(JSON.stringify(message));
@@ -82,6 +82,47 @@ app.post('/api/users/', function (req, res) {
         res.send(response);
     });
 })
+// Rent lodge
+app.post('/api/lodge/rent/', function (req, res) {
+    var data = req.body
+    console.log("Renting lodge "+data.lodgenr);
+    // Create transaction
+    var transactionname = "LodgeRent-"+data.lodgenr;
+    var q = "START TRANSACTION";
+    db.query(q, function(){});
+    console.log(q);
+    // Insert
+    console.log(data);
+    var q = 'INSERT INTO Orders (lodgenr,accountnr,price,startweek,endweek) '+
+        'VALUES ('+data.lodgenr+',"'+data.email+'",'+data.price+','+
+        data.weekstart+','+data.weekend+')';
+    console.log(q);
+
+    db.query(q, function(result, message){
+        var response = {};
+        console.log(message);
+        if (result){
+            db.query("COMMIT", function(){});
+            response.success = true;
+            response.message = "Rent was successful";
+        }
+        else {
+            db.query("ROLLBACK", function(){});
+            response.success = false;
+            response.message = "500: Couldn't create order";
+        }
+        res.send(response);
+    });
+})
+// Get users orders
+app.get('/api/users/:email/orders', function(req, res) {
+    var email = req.params.email;
+    var q = 'SELECT * FROM Orders WHERE email="'+email+'"';
+    db.query(q, function(result, message){
+        console.log(message)
+        res.end(JSON.stringify(message));
+    });
+  });
 // Authenticate login
 app.post('/api/authenticate/', function (req, res) {
     var email = req.body.email;

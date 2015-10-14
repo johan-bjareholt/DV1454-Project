@@ -16,12 +16,35 @@ app.controller("HomeCtrl", function($scope, $resource, $routeParams) {
 
 });
 
-app.controller("LodgeCtrl", function($scope, $resource, $routeParams){
+app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http){
+    var vm = this;
     var Lodge = $resource("/api/lodges/"+$routeParams.lodgenr);
     Lodge.get("", function(lodge){
         console.log(lodge);
         $scope.lodge = lodge;
     })
+    vm.rent = rent;
+    function rent(){
+        vm.dataLoading = true;
+        var order = {
+            "lodgenr": $scope.lodge.lodgenr,
+            "email": "johan@bjareho.lt",
+            "price": $scope.lodge.pricehigh,
+            "weekstart": vm.weekstart,
+            "weekend": vm.weekend,
+        };
+        console.log(order);
+        $http.post('/api/lodge/rent/', order).then(
+            // Success
+            function(response){
+                vm.dataLoading = false;
+                console.log(response);
+            }, // Error
+            function(response){
+                vm.dataLoading = false;
+                console.log(response);
+            }
+    );}
 });
 
 app.controller("LodgeListCtrl", function($scope, $resource, $routeParams, $location) {
@@ -41,10 +64,10 @@ app.controller("LoginController", function($location, AuthenticationService){
     vm.login = login;
     function login() {
         vm.dataLoading = true;
+        console.log(vm);
         AuthenticationService.Login(vm.email, vm.password, function (response) {
             console.log(response);
             if (response.success) {
-                //AuthenticationService.SetCredentials();
                 $location.path('/');
             } else {
                 window.alert(response.message);

@@ -9,17 +9,17 @@
     <tr><td>{{lodge.pricehigh}} sek/day</td></tr>
 </table>
 
-<form ng-if="user" name="form" ng-submit="vm.login()" role="form">
+<form ng-if="user" name="form" ng-submit="vm.rent()" role="form">
     <table>
-        <tr class="form-group" ng-class="{ 'has-error': form.week.$dirty && form.week.$error.required }">
-            <td><label for="week">Week</label></td>
-            <td><input type="text" name="week" id="week" class="form-control" ng-model="vm.week" required /></td>
-            <td><span ng-show="form.week.$dirty && form.week.$error.required" class="help-block">Week is required</span></td>
+        <tr class="form-group" ng-class="{ 'has-error': form.weekstart.$dirty && form.weekstart.$error.required }">
+            <td><label for="weekstart">Week Start</label></td>
+            <td><input type="text" name="weekstart" id="weekstart" class="form-control" ng-model="vm.weekstart" required /></td>
+            <td><span ng-show="form.weekstart.$dirty && form.weekstart.$error.required" class="help-block">Week start is required</span></td>
         </tr>
-        <tr class="form-group" ng-class="{ 'has-error': form.week.$dirty && form.week.$error.required }">
-            <td><label for="week">Week Count</label></td>
-            <td><input type="text" name="week" id="week" class="form-control" ng-model="vm.week" required /></td>
-            <td><span ng-show="form.week.$dirty && form.week.$error.required" class="help-block">Week count is required</span></td>
+        <tr class="form-group" ng-class="{ 'has-error': form.weekend.$dirty && form.weekend.$error.required }">
+            <td><label for="weekend">Week End</label></td>
+            <td><input type="text" name="weekend" id="weekend" class="form-control" ng-model="vm.weekend" required /></td>
+            <td><span ng-show="form.weekend.$dirty && form.weekend.$error.required" class="help-block">Week end is required</span></td>
         </tr>
         <div class="form-actions">
             <td>
