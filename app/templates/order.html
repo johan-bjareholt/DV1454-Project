@@ -1,0 +1,45 @@
+<p>A order</p>
+<table>
+    <tr>
+        <td>Ordernr</td>
+        <td>{{order.ordernr}}</td>
+    </tr>
+    <tr>
+        <td>Lodge</td>
+        <td><a href="/lodges/{{order.lodgenr}}">{{order.name}}</td>
+    </tr>
+        <td></td>
+        <td>{{order.description}}</td>
+    <tr>
+        <td>Adress</td>
+        <td>{{order.adress}}</td>
+    </tr>
+    <tr>
+        <td>Duration</td>
+        <td>
+            <div ng-if="order.startweek != order.endweek">
+                w{{order.startweek}} - w{{order.endweek}}
+            </div>
+            <div ng-if="order.startweek == order.endweek">
+                w{{order.startweek}}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Price</td>
+        <td>{{order.price}} sek</td>
+    </tr>
+</table>
+
+<div ng-if="order.startweek < 10 || order.startweek > 40" ng-controller="WinterRentalCtrl">
+    <h4>Rent skis</h4>
+    <div ng-repeat="skitype in skitypes">
+        {{skitype}}
+    </div>
+</div>
+<div ng-if="order.startweek > 10 && order.startweek < 40" ng-controller="SummerRentalCtrl">
+    <h4>Rent bike</h4>
+    <div ng-repeat="biketype in biketypes">
+        {{biketype}}
+    </div>
+</div>

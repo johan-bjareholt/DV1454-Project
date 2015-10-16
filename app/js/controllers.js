@@ -12,8 +12,55 @@ app.controller("HeaderCtrl", function($scope, $resource, $routeParams, $cookieSt
     }
 });
 
-app.controller("HomeCtrl", function($scope, $resource, $routeParams) {
+app.controller("HomeCtrl", function($scope, $rootScope, $resource, $routeParams) {
+    if ($rootScope.user){
+        var Orders = $resource("/api/users/"+$rootScope.user.email+"/orders");
+        Orders.get("", function(orders){
+            var orderlist = {};
+            orders = orders.toJSON();
+            if (orders["ordernr"]){
+                orderlist[orders["ordernr"]] = orders;
+            }
+            else
+                orderlist = orders;
+            $scope.orders = orderlist;
+            console.log(orderlist);
+        })
+    }
+});
 
+app.controller("OrderCtrl", function($scope, $resource, $routeParams, $http){
+    var vm = this;
+    var Order = $resource("/api/orders/"+$routeParams.ordernr);
+    Order.get("", function(order){
+        console.log(order);
+        $scope.order = order;
+    })
+});
+
+app.controller("WinterRentalCtrl", function($scope, $resource, $routeParams, $http){
+    var vm = this;
+    $scope.skitypes = ["skitype1", "skitype2"];
+    console.log($scope.skitypes);
+    /*
+    var Order = $resource("/api/orders/"+$routeParams.ordernr);
+    Order.get("", function(order){
+        console.log(order);
+        $scope.order = order;
+    })
+    */
+});
+
+app.controller("SummerRentalCtrl", function($scope, $resource, $routeParams, $http){
+    var vm = this;
+    $scope.biketypes = ["biketype1", "biketype2"];
+    /*
+    var Order = $resource("/api/orders/"+$routeParams.ordernr);
+    Order.get("", function(order){
+        console.log(order);
+        $scope.order = order;
+    })
+    */
 });
 
 app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http){

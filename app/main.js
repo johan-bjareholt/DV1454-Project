@@ -93,7 +93,7 @@ app.post('/api/lodge/rent/', function (req, res) {
     console.log(q);
     // Insert
     console.log(data);
-    var q = 'INSERT INTO Orders (lodgenr,accountnr,price,startweek,endweek) '+
+    var q = 'INSERT INTO Orders (lodgenr,email,price,startweek,endweek) '+
         'VALUES ('+data.lodgenr+',"'+data.email+'",'+data.price+','+
         data.weekstart+','+data.weekend+')';
     console.log(q);
@@ -117,12 +117,23 @@ app.post('/api/lodge/rent/', function (req, res) {
 // Get users orders
 app.get('/api/users/:email/orders', function(req, res) {
     var email = req.params.email;
-    var q = 'SELECT * FROM Orders WHERE email="'+email+'"';
+    var q = 'SELECT * FROM Orders INNER JOIN Lodges ON Lodges.lodgenr=Orders.lodgenr WHERE email="'+email+'"';
+    console.log(q);
     db.query(q, function(result, message){
         console.log(message)
         res.end(JSON.stringify(message));
     });
-  });
+});
+// Get specific order
+app.get('/api/orders/:ordernr/', function(req, res) {
+    var ordernr = req.params.ordernr;
+    var q = 'SELECT * FROM Orders INNER JOIN Lodges ON Lodges.lodgenr=Orders.lodgenr WHERE ordernr="'+ordernr+'"';
+    console.log(q);
+    db.query(q, function(result, message){
+        console.log(message)
+        res.end(JSON.stringify(message));
+    });
+});
 // Authenticate login
 app.post('/api/authenticate/', function (req, res) {
     var email = req.body.email;

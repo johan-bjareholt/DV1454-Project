@@ -2,3 +2,32 @@
     Welcome to the Lodge Renting website!<br>
     Boop boop
 </p>
+
+<div ng-repeat="order in orders">
+    <table>
+        <tr>
+            <td>Ordernumber:</td>
+            <td><a href="/orders/{{order.ordernr}}">{{order.ordernr}}<a></td>
+        </tr>
+        <tr>
+            <td>Lodge</td>
+            <td>{{order.name}}</td>
+        </tr>
+        <tr>
+            <td>Period:</td>
+            <td>
+                <div ng-if="order.startweek != order.endweek">
+                    w{{order.startweek}} - w{{order.endweek}}
+                </div>
+                <div ng-if="order.startweek == order.endweek">
+                    w{{order.startweek}}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Price:</td>
+            <td>{{order.price}} SEK</td>
+        </tr>
+    </table>
+    <br>
+</div>

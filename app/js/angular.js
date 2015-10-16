@@ -16,6 +16,11 @@ app.config(function($routeProvider, $locationProvider) {
         controller: "LodgeListCtrl",
         controllerAs: 'vm'
     });
+    $routeProvider.when("/orders/:ordernr", {
+        templateUrl: "templates/order.html",
+        controller: "OrderCtrl",
+        controllerAs: 'vm'
+    });
     $routeProvider.when("/login/", {
         templateUrl: "templates/login.html",
         controller: "LoginController",

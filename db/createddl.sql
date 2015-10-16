@@ -1,5 +1,10 @@
+DROP TABLE IF EXISTS SummerRentals;
+DROP TABLE IF EXISTS WinterRentals;
+
+ DROP TABLE IF EXISTS Orders;
 
 DROP TABLE IF EXISTS Accounts;
+DROP TABLE IF EXISTS Lodges;
 
 CREATE TABLE IF NOT EXISTS Accounts (
     email VARCHAR(40) NOT NULL PRIMARY KEY,
@@ -7,8 +12,6 @@ CREATE TABLE IF NOT EXISTS Accounts (
     firstname VARCHAR(20) NOT NULL,
     lastname VARCHAR(30) NOT NULL
 );
-
---DROP TABLE IF EXISTS Lodges;
 
 CREATE TABLE IF NOT EXISTS Lodges (
     lodgenr INT NOT NULL PRIMARY KEY,
@@ -22,34 +25,24 @@ CREATE TABLE IF NOT EXISTS Lodges (
     description VARCHAR(255) NOT NULL
 );
 
--- DROP TABLE IF EXISTS Orders;
-
 CREATE TABLE IF NOT EXISTS Orders (
     ordernr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    accountnr VARCHAR(40) NOT NULL,
+    email VARCHAR(40) NOT NULL,
+    FOREIGN KEY (email) REFERENCES Accounts(email),
     lodgenr INT NOT NULL,
+    FOREIGN KEY (lodgenr) REFERENCES Lodges(lodgenr),
     price FLOAT NOT NULL,
     startweek INT NOT NULL,
     endweek INT NOT NULL
 );
 
---DROP TABLE IF EXISTS Customer;
-
-CREATE TABLE IF NOT EXISTS Customer (
-    customernr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
-    birthdate DATE NOT NULL
-);
-
---DROP TABLE IF EXISTS WinterRentals;
-
 CREATE TABLE IF NOT EXISTS WinterRentals (
     wrentalnr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     ordernr INT NOT NULL,
-    customernr INT NOT NULL,
+    FOREIGN KEY (ordernr) REFERENCES Orders(ordernr),
 
-    rentalstart DATE NOT NULL,
-    rentalend DATE NOT NULL,
+    startweek INT NOT NULL,
+    endweek INT NOT NULL,
 
     skitype VARCHAR(20) NOT NULL,
     skilength INT NOT NULL,
@@ -58,13 +51,13 @@ CREATE TABLE IF NOT EXISTS WinterRentals (
     skihelmetsize INT NOT NULL
 );
 
---DROP TABLE IF EXISTS SummerRentals;
-
 CREATE TABLE IF NOT EXISTS SummerRentals (
     srentalnr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    customernr INT NOT NULL,
-    rentalstart DATE NOT NULL,
-    rentalend DATE NOT NULL,
+    ordernr INT NOT NULL,
+    FOREIGN KEY (ordernr) REFERENCES Orders(ordernr),
+
+    startweek INT NOT NULL,
+    endweek INT NOT NULL,
 
     biketype VARCHAR(25) NOT NULL,
     bikebrand VARCHAR(25) NOT NULL,
