@@ -31,36 +31,85 @@ app.controller("HomeCtrl", function($scope, $rootScope, $resource, $routeParams)
 
 app.controller("OrderCtrl", function($scope, $resource, $routeParams, $http){
     var vm = this;
+    vm.newcustomer = {};
     var Order = $resource("/api/orders/"+$routeParams.ordernr);
     Order.get("", function(order){
         console.log(order);
+        vm.newcustomer['ordernr'] = order.ordernr;
         $scope.order = order;
     })
+
+    vm.add_customer = function(){
+        console.log(vm.newcustomer);
+        vm.dataLoading = true;
+        $http.post('/api/orders/add_customer', vm.newcustomer).then(
+            function(response){ // Success
+                vm.dataLoading = false;
+                console.log(response);
+                window.alert('Successfully added new person');
+                location.reload();// Reloads page
+            }, function(){ // Error
+                vm.dataLoading = false;
+                window.alert('Error renting skis');
+        });
+    }
 });
 
 app.controller("WinterRentalCtrl", function($scope, $resource, $routeParams, $http){
     var vm = this;
-    $scope.skitypes = ["skitype1", "skitype2"];
-    console.log($scope.skitypes);
-    /*
-    var Order = $resource("/api/orders/"+$routeParams.ordernr);
-    Order.get("", function(order){
-        console.log(order);
-        $scope.order = order;
-    })
-    */
+
+    $scope.skitypes = ["Downhill", "Cross-country"];
+    $scope.skishoesizes = [35,36,37,38,39,40,41,42,43,44,45,46];
+    $scope.skipolelengths = [80,85,90,95,100,105,110,115,120,125,130,135,140];
+    $scope.helmetsizes = ["XS", "S", "M", "L", "XL", "XXL"];
+
+    console.log("Winterrental")
+    vm.skis = { 'ordernr': $scope.order.ordernr,
+                'startweek': $scope.order.startweek,
+                'endweek': $scope.order.endweek};
+
+    vm.rent = rent;
+    function rent(){
+        console.log(vm.skis);
+        vm.dataLoading = true;
+        $http.post('/api/rent/skis', vm.skis).then(
+            function(response){ // Success
+                vm.dataLoading = false;
+                console.log(response);
+                window.alert('Ski rental successful');
+                location.reload();// Reloads page
+            }, function(){ // Error
+                vm.dataLoading = false;
+                window.alert('Error renting skis');
+        });
+    }
 });
 
 app.controller("SummerRentalCtrl", function($scope, $resource, $routeParams, $http){
     var vm = this;
-    $scope.biketypes = ["biketype1", "biketype2"];
-    /*
-    var Order = $resource("/api/orders/"+$routeParams.ordernr);
-    Order.get("", function(order){
-        console.log(order);
-        $scope.order = order;
-    })
-    */
+    $scope.order = $scope.$parent.order;
+
+    $scope.biketypes = ["Road bike", "Mountainbike", "Downhill bike"];
+    $scope.helmetsizes = ["XS", "S", "M", "L", "XL", "XXL"];
+
+    vm.bike = { 'ordernr': $scope.order.ordernr,
+                'startweek': $scope.order.startweek,
+                'endweek': $scope.order.endweek };
+    vm.rent = rent;
+    function rent(){
+        console.log(vm.bike)
+        vm.dataLoading = true;
+        $http.post('/api/rent/bike', vm.bike).then(
+            function(response){ // Success
+                vm.dataLoading = false;
+                console.log(response);
+                window.alert('Bike rental successful');
+                location.reload();// Reloads page
+            }, function(){ // Error
+                vm.dataLoading = false;
+                window.alert('Error renting bike');
+        });
+    }
 });
 
 app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http){
@@ -141,6 +190,6 @@ app.controller("RegisterController", function(UserService, $location, $rootScope
                     window.alert(response.message);
                     vm.dataLoading = false;
                 }
-            });
+        });
     }
 });

@@ -131,9 +131,79 @@ app.get('/api/orders/:ordernr/', function(req, res) {
     console.log(q);
     db.query(q, function(result, message){
         console.log(message)
-        res.end(JSON.stringify(message));
+        var equipmenttype;
+        if (message.startweek < 10 || message.startweek > 40){
+            equipmenttype = "WinterRentals"
+            q = 'SELECT * FROM WinterRentals WHERE ordernr='+message.ordernr;
+        }
+        else {
+            equipmenttype = "SummerRentals"
+            q = 'SELECT * FROM SummerRentals WHERE ordernr='+message.ordernr;
+        }
+        console.log(q);
+        db.query(q, function(result, message2){
+            console.log(message2)
+            if (message2 && "ordernr" in message2){
+                var tmp = message2
+                message2 = {"1":tmp};
+            }
+            message[equipmenttype] = message2;
+            var q = "SELECT * FROM Customers WHERE Customers.ordernr="+ordernr;
+            db.query(q, function(result, message3){
+                if (result){
+                    message['customers'] = message3;
+                    res.end(JSON.stringify(message));
+                }
+            })
+        });
     });
 });
+app.post('/api/orders/add_customer', function(req, res){
+    var data = req.body;
+    var q = 'INSERT INTO Customers (name,gender,ordernr) VALUES ("' +
+            data.name + '","' + data.gender + '",' + data.ordernr + ')';
+    console.log(q);
+    db.query(q, function(result, message){
+        if (result){
+            console.log(message);
+            res.send("Successfully added customer");
+        }
+        else {
+            console.log(message);
+        }
+    });
+});
+// Rent skis
+app.post('/api/rent/skis', function(req, res){
+    var data = req.body;
+    // Increase price
+    console.log(data);
+    var q = 'INSERT INTO WinterRentals '+
+            '(ordernr,startweek,endweek,skitype,skilength,skishoesize,skipolelength,skihelmetsize) VALUES ('+
+        +data.ordernr+','+data.startweek+','+data.endweek+',"'+
+        data.skitype+'",'+data.skilength+','+data.skishoesize+','+data.skipolelength+',"'+data.helmetsize+'")';
+    console.log(q);
+    db.query(q, function(result, message){
+        console.log(message);
+        if (result)
+            res.send("hello skirental, it worked!");
+    });
+})
+// Rent bike
+app.post('/api/rent/bike', function(req, res){
+    var data = req.body;
+    // Increase price
+    console.log(data);
+    var q = 'INSERT INTO SummerRentals (ordernr,startweek,endweek,biketype,leglength,bikehelmetsize) VALUES ('+
+        +data.ordernr+','+data.startweek+','+data.endweek+',"'+
+        data.biketype+'",'+data.leglength+',"'+data.helmetsize+'")';
+    console.log(q);
+    db.query(q, function(result, message){
+        console.log(message);
+        if (result)
+            res.send("hello bikerental, it worked!");
+    });
+})
 // Authenticate login
 app.post('/api/authenticate/', function (req, res) {
     var email = req.body.email;

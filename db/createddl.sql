@@ -1,7 +1,8 @@
+DROP TABLE IF EXISTS Customers;
 DROP TABLE IF EXISTS SummerRentals;
 DROP TABLE IF EXISTS WinterRentals;
 
- DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Orders;
 
 DROP TABLE IF EXISTS Accounts;
 DROP TABLE IF EXISTS Lodges;
@@ -36,6 +37,13 @@ CREATE TABLE IF NOT EXISTS Orders (
     endweek INT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS Customers (
+    name VARCHAR(50) NOT NULL PRIMARY KEY,
+    gender VARCHAR(6) NOT NULL,
+    ordernr INT NOT NULL,
+    FOREIGN KEY (ordernr) REFERENCES Orders(ordernr)
+);
+
 CREATE TABLE IF NOT EXISTS WinterRentals (
     wrentalnr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     ordernr INT NOT NULL,
@@ -48,7 +56,7 @@ CREATE TABLE IF NOT EXISTS WinterRentals (
     skilength INT NOT NULL,
     skishoesize INT NOT NULL,
     skipolelength INT NOT NULL,
-    skihelmetsize INT NOT NULL
+    skihelmetsize VARCHAR(5) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS SummerRentals (
@@ -60,8 +68,7 @@ CREATE TABLE IF NOT EXISTS SummerRentals (
     endweek INT NOT NULL,
 
     biketype VARCHAR(25) NOT NULL,
-    bikebrand VARCHAR(25) NOT NULL,
-    bikemodel VARCHAR(25) NOT NULL,
+    leglength INT NOT NULL,
     bikehelmetsize VARCHAR(5) NOT NULL
 );
 

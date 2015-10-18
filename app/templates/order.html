@@ -1,4 +1,3 @@
-<p>A order</p>
 <table>
     <tr>
         <td>Ordernr</td>
@@ -31,15 +30,159 @@
     </tr>
 </table>
 
-<div ng-if="order.startweek < 10 || order.startweek > 40" ng-controller="WinterRentalCtrl">
-    <h4>Rent skis</h4>
-    <div ng-repeat="skitype in skitypes">
-        {{skitype}}
+<div>
+    <h4>Household</h4>
+    <div ng-repeat="customer in order.customers">
+        <p> -
+            <span ng-if="customer.gender == 'Male'">
+                Mr
+            </span>
+            <span ng-if="customer.gender == 'Female'">
+                Mrs
+            </span>
+            {{customer.name}}
+        </p>
     </div>
+    <form ng-submit="vm.add_customer()" name="form" role="form">
+        <h4>Add to household</h4>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" ng-model="vm.newcustomer.name"></td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td>
+                    <select ng-model="vm.newcustomer.gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="submit" ng-disabled="form.$invalid || vm.dataLoading">Add</button>
+                    <img ng-if="vm.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
-<div ng-if="order.startweek > 10 && order.startweek < 40" ng-controller="SummerRentalCtrl">
+
+<div ng-if="order.startweek < 10 || order.startweek > 40" ng-controller="WinterRentalCtrl as vm">
+    <h4>Rented Skis<h4>
+    <table ng-repeat="skis in order.WinterRentals">
+        <tr>
+            <td>Skitype</td>
+            <td>{{skis.skitype}}</td>
+        </tr>
+        <tr>
+            <td>Skilength</td>
+            <td>{{skis.skilength}}</td>
+        </tr>
+        <tr>
+            <td>Shoesize</td>
+            <td>{{skis.skishoesize}}</td>
+        </tr>
+        <tr>
+            <td>Skipole length</td>
+            <td>{{skis.skipolelength}}</td>
+        </tr>
+        <tr>
+            <td>Helmetsize</td>
+            <td>{{skis.skihelmetsize}}</td>
+        </tr>
+        <tr><td><ul></td></tr>
+    </table>
+    <h4>Rent skis</h4>
+    <form ng-submit="vm.rent()" name="form" role="form">
+    <table>
+        <tr><td>Skitype</td>
+            <td>
+                <select ng-model="vm.skis.skitype" required>
+                    <option ng-repeat="skitype in skitypes">{{skitype}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr><td>Shoesize</td>
+            <td>
+                <select ng-model="vm.skis.skishoesize">
+                    <option ng-repeat="skishoesize in skishoesizes" required>{{skishoesize}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr><td><label for="skilength">Skilength<label></td>
+            <td>
+                <input type="text" ng-model="vm.skis.skilength" required></input>
+            </td>
+        </tr>
+        <tr><td>Skipole length</td>
+            <td>
+                <select ng-model="vm.skis.skipolelength" required="">
+                    <option ng-repeat="skipolelength in skipolelengths">{{skipolelength}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr><td>Helmet size</td>
+            <td>
+                <select ng-model="vm.skis.helmetsize" required>
+                    <option ng-repeat="helmetsize in helmetsizes">{{helmetsize}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" ng-disabled="form.$invalid || vm.dataLoading">Rent</button>
+                <img ng-if="vm.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<div ng-if="order.startweek > 10 && order.startweek < 40" ng-controller="SummerRentalCtrl as vm">
+    <h4>Rented bikes<h4>
+    <table ng-repeat="bike in order.SummerRentals">
+        <tr>
+            <td>Biketype</td>
+            <td>{{bike.biketype}}</td>
+        </tr>
+        <tr>
+            <td>Leglength</td>
+            <td>{{bike.leglength}}</td>
+        </tr>
+        <tr>
+            <td>Helmetsize</td>
+            <td>{{bike.bikehelmetsize}}</td>
+        </tr>
+    </table>
     <h4>Rent bike</h4>
-    <div ng-repeat="biketype in biketypes">
-        {{biketype}}
-    </div>
+    <form ng-submit="vm.rent()" name="form" role="form">
+    <table>
+        <tr>
+            <td>Biketype</td>
+            <td>
+                <select ng-model="vm.bike.biketype" required>
+                    <option ng-repeat="biketype in biketypes">{{biketype}}</option>
+                </select>
+            </td>
+        </tr>
+            <td>Leglength</td>
+            <td><input ng-model="vm.bike.leglength" required></input></td>
+        </tr>
+        <tr>
+            <td>Helmet size</td>
+            <td>
+                <select ng-model="vm.bike.helmetsize" required>
+                    <option ng-repeat="helmetsize in helmetsizes">{{helmetsize}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit" ng-disabled="form.$invalid || vm.dataLoading">Rent</button>
+                <img ng-if="vm.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </td>
+        </tr>
+    </table>
+    </form>
 </div>
