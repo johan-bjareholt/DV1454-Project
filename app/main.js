@@ -30,8 +30,14 @@ app.get('/api/lodges/:lodgenr', function (req, res) {
         function(success, result){
             if (success){
                 data = result;
+
+                var q = 'SELECT startweek, endweek FROM Orders WHERE lodgenr='+lodgenr;
+                db.query(q, function(success, datesresult){
+                    if (success)
+                        data["orderdates"] = datesresult;
+                    res.end(JSON.stringify(data));
+                });
             }
-            res.end(JSON.stringify(data));
     });
 })
 

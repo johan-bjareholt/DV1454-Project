@@ -112,16 +112,51 @@ app.controller("SummerRentalCtrl", function($scope, $resource, $routeParams, $ht
     }
 });
 
-app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http){
+app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http, $location){
     var vm = this;
     var Lodge = $resource("/api/lodges/"+$routeParams.lodgenr);
     Lodge.get("", function(lodge){
         console.log(lodge);
         $scope.lodge = lodge;
+        if ('startweek' in lodge.orderdates){
+            lodge.orderdates = {"fake": lodge.orderdates};
+        }
+        for (orderid in lodge.orderdates){
+            console.log(orderid);
+            console.log(lodge.orderdates[orderid])
+            var orderstart = lodge.orderdates[orderid]["startweek"];
+            console.log(orderstart)
+            var orderlength = lodge.orderdates[orderid]["endweek"]-orderstart+1;
+            var index = $scope.weeks_available.indexOf(orderstart);
+            if (index){
+                $scope.weeks_available.splice(index, orderlength);
+            }
+        }
     })
+    var weeks = [];
+    for (n=1; n<=53; n++){
+        weeks.push(n);
+    }
+    console.log(weeks);
+    $scope.weeks_available = weeks;
     vm.rent = rent;
     function rent(){
         vm.dataLoading = true;
+        // Check that the lodge is actually available
+        var rentweeks = [];
+        for (week=vm.weekstart; week<=vm.weekend; week++)
+            rentweeks.push(week);
+        var weeks_rentable = true;
+        for (week in rentweeks){
+            if ($scope.weeks_available.indexOf(week) == -1){
+                weeks_rentable = false;
+        }}
+        if (!weeks_rentable){
+            window.alert("The lodge is unavailable those weeks, please choose some other weeks");
+            vm.dataLoading = false;
+            return;
+        }
+        // Create order
         var order = {
             "lodgenr": $scope.lodge.lodgenr,
             "email": "johan@bjareho.lt",
@@ -135,6 +170,8 @@ app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http){
             function(response){
                 vm.dataLoading = false;
                 console.log(response);
+                window.alert("Lodge successfully rented!");
+                $location.url("/");
             }, // Error
             function(response){
                 vm.dataLoading = false;
