@@ -36,6 +36,11 @@ app.controller("OrderCtrl", function($scope, $resource, $routeParams, $http){
     Order.get("", function(order){
         console.log(order);
         vm.newcustomer['ordernr'] = order.ordernr;
+        var priceperweek = 500*(order.endweek-order.startweek+1);
+        if ("WinterRentals" in order)
+            order.rentalprice = priceperweek * Object.keys(order.WinterRentals).length;
+        if ("SummerRentals" in order)
+            order.rentalprice = priceperweek * Object.keys(order.SummerRentals).length;
         $scope.order = order;
     })
 
@@ -122,10 +127,7 @@ app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http, $lo
             lodge.orderdates = {"fake": lodge.orderdates};
         }
         for (orderid in lodge.orderdates){
-            console.log(orderid);
-            console.log(lodge.orderdates[orderid])
             var orderstart = lodge.orderdates[orderid]["startweek"];
-            console.log(orderstart)
             var orderlength = lodge.orderdates[orderid]["endweek"]-orderstart+1;
             var index = $scope.weeks_available.indexOf(orderstart);
             if (index){
@@ -137,20 +139,27 @@ app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http, $lo
     for (n=1; n<=53; n++){
         weeks.push(n);
     }
-    console.log(weeks);
     $scope.weeks_available = weeks;
     vm.rent = rent;
     function rent(){
         vm.dataLoading = true;
+        // Check that the weekspan is valid
+        if (vm.weekstart > vm.weekend){
+            window.alert("Startdate cannot be after enddate!");
+            vm.dataLoading = false;
+            return;
+        }
         // Check that the lodge is actually available
         var rentweeks = [];
-        for (week=vm.weekstart; week<=vm.weekend; week++)
+        for (week=parseInt(vm.weekstart); week<=vm.weekend; week++)
             rentweeks.push(week);
         var weeks_rentable = true;
-        for (week in rentweeks){
-            if ($scope.weeks_available.indexOf(week) == -1){
+        for (weeki in rentweeks){
+            if ($scope.weeks_available.indexOf(rentweeks[weeki]) == -1){
                 weeks_rentable = false;
-        }}
+                console.log("Week " + rentweeks[weeki] + " is already rented")
+            }
+        }
         if (!weeks_rentable){
             window.alert("The lodge is unavailable those weeks, please choose some other weeks");
             vm.dataLoading = false;
@@ -170,8 +179,14 @@ app.controller("LodgeCtrl", function($scope, $resource, $routeParams, $http, $lo
             function(response){
                 vm.dataLoading = false;
                 console.log(response);
-                window.alert("Lodge successfully rented!");
-                $location.url("/");
+                if (response.data.success){
+                    console.log(response.data);
+                    window.alert("Lodge successfully rented!");
+                    $location.url("/");
+                }
+                else {
+                    window.alert(response.data.message)
+                }
             }, // Error
             function(response){
                 vm.dataLoading = false;

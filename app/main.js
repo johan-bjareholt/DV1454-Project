@@ -98,6 +98,7 @@ app.post('/api/lodge/rent/', function (req, res) {
     db.query(q, function(){});
     console.log(q);
     // Insert
+    data.price = data.price * (parseInt(data.weekend)-parseInt(data.weekstart)+1);
     console.log(data);
     var q = 'INSERT INTO Orders (lodgenr,email,price,startweek,endweek) '+
         'VALUES ('+data.lodgenr+',"'+data.email+'",'+data.price+','+

@@ -39,12 +39,19 @@ header {
 */
 
 .content {
-    padding: 2em;
-    padding-top: 5em;
+    padding: 4em;
+    padding-top: 7em;
 }
 
 .headeritem {
     display: inline;
+}
+
+.container {
+    box-shadow: 0 0 2px black;
+    border-radius: 0.5em;
+    padding: 1em;
+    margin-bottom: 1em;
 }
 
 /*
